@@ -24,6 +24,7 @@ class Owner(Model):
 
     class Meta:
         database = db
+        primary_key = CompositeKey('user_id', 'voting_id')
 
 
 class Votes(Model):
