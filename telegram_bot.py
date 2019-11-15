@@ -44,7 +44,7 @@ def callback_evote(call):
 def ask_and_create_evote(message):
     users_create_now[message.chat.id]['answer'].append(message.text)
     if len(users_create_now[message.chat.id]['answer']) == len(users_create_now[message.chat.id]['question']):
-        to_create_answer = [{users_create_now[message.chat.id]['question_header'][i]: users_create_now[message.chat.id]['answer'][i]} for i in range(len(users_create_now[message.chat.id]['question_header']))]
+        to_create_answer = [[users_create_now[message.chat.id]['question_header'][i], users_create_now[message.chat.id]['answer'][i]] for i in range(len(users_create_now[message.chat.id]['question_header']))]
 
         if get_creator_answers(message.chat.id, users_create_now[message.chat.id]['type'], to_create_answer):
             bot.send_message(message.chat.id, "Voting created")
