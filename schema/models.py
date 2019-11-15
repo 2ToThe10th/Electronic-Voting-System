@@ -15,6 +15,7 @@ class Poll(Model):
     title = CharField(max_length=100, default='Voting number ' + str(id))
     description = TextField(default='')
     type = CharField(max_length=100)
+    config_json = TextField()
 
     owner_id = ForeignKeyField(User)
 
