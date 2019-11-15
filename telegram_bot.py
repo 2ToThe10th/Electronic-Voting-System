@@ -50,6 +50,8 @@ def ask_and_create_evote(message):
             bot.send_message(message.chat.id, "Voting created")
         else:
             bot.send_message(message.chat.id, "ERROR")
+
+        users_create_now.pop(message.chat.id, None)
     else:
         bot.send_message(message.chat.id, users_create_now[message.chat.id]['question'][len(users_create_now[message.chat.id]['answer'])])
 
