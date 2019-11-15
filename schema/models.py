@@ -25,12 +25,12 @@ class Poll(Model):
 
 class Votes(Model):
     user_id = ForeignKeyField(User, backref='voter')
-    voting_id = ForeignKeyField(Poll, backref='voting', index=True)
+    poll_id = ForeignKeyField(Poll, backref='poll', index=True)
     answer_json = TextField()
 
     class Meta:
         database = db
-        primary_key = CompositeKey('user_id', 'voting_id')
+        primary_key = CompositeKey('user_id', 'poll_id')
 
 
 db.connect()

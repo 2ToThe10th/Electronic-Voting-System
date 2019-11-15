@@ -20,3 +20,8 @@ def create_poll(owner_id, type_title, config, title='', desc=''):
     else:
         print('Poll with id =', id, 'already exists')
     return id
+
+
+def get_poll_data(poll_id):
+    poll = models.Poll.get_by_id(poll_id)
+    return poll.owner_id, poll.type, poll.config_json
