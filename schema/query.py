@@ -1,4 +1,4 @@
-import models
+import schema.models as models
 
 
 def create_user(id, user_name=''):
