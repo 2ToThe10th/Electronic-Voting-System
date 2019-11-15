@@ -1,7 +1,6 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from lib import get_types, creation, get_creator_answers
-import json
 
 TOKEN = "783657766:AAHh0XwRqUoYseLKyxZxhPr-vwhukp9iMCc"
 
@@ -19,11 +18,11 @@ def start(message):
 def create_evote(message):
     users_create_now.pop(message.chat.id, None)
     users_create_now[message.chat.id] = None
-    voit_types = get_types()
+    vote_types = get_types()
     markup = InlineKeyboardMarkup()
     markup.row_width = 1
-    for voit_type in voit_types:
-        markup.add(InlineKeyboardButton(voit_type, callback_data="type" + voit_type))
+    for vote_type in vote_types:
+        markup.add(InlineKeyboardButton(vote_type, callback_data="type" + vote_type))
     bot.send_message(message.chat.id, "Select type of electronic voting system:", reply_markup=markup)
 
 
