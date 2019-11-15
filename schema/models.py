@@ -17,20 +17,20 @@ class Poll(Model):
     type = CharField(max_length=100)
     config_json = TextField()
 
-    owner_id = ForeignKeyField(User)
+    owner = ForeignKeyField(User)
 
     class Meta:
         database = db
 
 
 class Votes(Model):
-    user_id = ForeignKeyField(User, backref='voter')
-    poll_id = ForeignKeyField(Poll, backref='poll', index=True)
+    user = ForeignKeyField(User)
+    poll = ForeignKeyField(Poll, index=True)
     answer_json = TextField()
 
     class Meta:
         database = db
-        primary_key = CompositeKey('user_id', 'poll_id')
+        primary_key = CompositeKey('user', 'poll')
 
 
 db.connect()
