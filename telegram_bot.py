@@ -69,7 +69,7 @@ def print_vote_with_code(message):
     #    return
 
     users_vote_now.pop(message.chat.id, None)
-    users_create_now[message.chat.id] = code
+    users_vote_now[message.chat.id] = {'type': vote_type, 'code': code}
 
     if vote_type == "choose_one":
         markup = InlineKeyboardMarkup()
@@ -89,14 +89,12 @@ def print_vote_with_code(message):
 
 @bot.callback_query_handler(func=lambda call: len(call.data) >= 4 and call.data[:4] == "vote" and call.message.chat.id in users_vote_now and users_vote_now[call.message.chat.id] is not None)
 def callback_vote_evote(call):
-    if users_vote_now[call.message.chat.id] == "choose_one":
+    print(users_vote_now[call.message.chat.id])
+    if users_vote_now[call.message.chat.id]['type'] == "choose_one":
         vote_answer = int(call.data[4:])
-        if call.message.chat.id in users_vote_now:
-            get_vote(call.message.chat.id, users_vote_now[call.message.chat.id], vote_answer)
-            bot.send_message(call.message.chat.id, "You vote is really important for us")
-            users_vote_now.pop(call.message.chat.id, None)
-        else:
-            bot.send_message(call.message.chat.id, "ERROR")
+        get_vote(call.message.chat.id, users_vote_now[call.message.chat.id]['code'], vote_answer)
+        bot.send_message(call.message.chat.id, "You vote is really important for us")
+        users_vote_now.pop(call.message.chat.id, None)
 
 
 bot.polling()
