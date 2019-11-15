@@ -63,7 +63,7 @@ def ask_and_create_evote(message):
 def print_vote_with_code(message):
     #try:
     code = int(message.text[5:])
-    vote_type, vote_question = vote(code) #, vote_answers
+    vote_type, vote_answers, vote_question = vote(code)
     #except:
     #    bot.send_message(message.chat.id, "after /vote might go code of vote")
     #    return
@@ -87,15 +87,16 @@ def print_vote_with_code(message):
         bot.send_message(message.chat.id, send_message, reply_markup=markup)
 
 
-@bot.callback_query_handler(func=lambda call: len(call.data) >= 4 and call.data[:4] == "vote")
+@bot.callback_query_handler(func=lambda call: len(call.data) >= 4 and call.data[:4] == "vote" and call.message.chat.id in users_vote_now and users_vote_now[call.message.chat.id] is not None)
 def callback_vote_evote(call):
-    vote_answer = int(call.data[4:])
-    if call.message.chat.id in users_vote_now:
-        get_vote(call.message.chat.id, users_vote_now[call.message.chat.id], vote_answer)
-        bot.send_message(call.message.chat.id, "You vote is really important for us")
-        users_vote_now.pop(call.message.chat.id, None)
-    else:
-        bot.send_message(call.message.chat.id, "ERROR")
+    if users_vote_now[call.message.chat.id] == "choose_one":
+        vote_answer = int(call.data[4:])
+        if call.message.chat.id in users_vote_now:
+            get_vote(call.message.chat.id, users_vote_now[call.message.chat.id], vote_answer)
+            bot.send_message(call.message.chat.id, "You vote is really important for us")
+            users_vote_now.pop(call.message.chat.id, None)
+        else:
+            bot.send_message(call.message.chat.id, "ERROR")
 
 
 bot.polling()
