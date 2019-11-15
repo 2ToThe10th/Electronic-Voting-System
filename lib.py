@@ -1,6 +1,7 @@
 import json
 import schema.query as queries
 from normalizer import normalize_config
+from vote_functions import vote_data
 
 
 def get_types():
@@ -24,10 +25,15 @@ def get_creator_answers(chat_id, type, answers):
     for answer in answers:
         poll[answer[0]] = answer[1]
     if normalize_config[type](poll):
-        queries.create_poll(chat_id, type, poll)
-        print(poll)
-        return True
-    return False
+        poll_id = queries.create_poll(chat_id, type, poll)
+        return poll_id
+    return -1
+
+
+def vote(id):
+    owner, type, config = queries.get_poll_data(id)
+    return vote_data['type'](config)
+
 
 
 
