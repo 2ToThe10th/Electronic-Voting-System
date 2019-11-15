@@ -1,6 +1,6 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from lib_fake import get_types, creation, get_creator_answers
+from lib import get_types, creation, get_creator_answers
 import schema.query as queries
 
 TOKEN = "783657766:AAHh0XwRqUoYseLKyxZxhPr-vwhukp9iMCc"
