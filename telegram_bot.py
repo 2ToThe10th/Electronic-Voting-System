@@ -46,10 +46,12 @@ def ask_and_create_evote(message):
     if len(users_create_now[message.chat.id]['answer']) == len(users_create_now[message.chat.id]['question']):
         to_create_answer = [[users_create_now[message.chat.id]['question_header'][i], users_create_now[message.chat.id]['answer'][i]] for i in range(len(users_create_now[message.chat.id]['question_header']))]
 
-        if get_creator_answers(message.chat.id, users_create_now[message.chat.id]['type'], to_create_answer):
-            bot.send_message(message.chat.id, "Voting created")
-        else:
+        id_of_created_vote = get_creator_answers(message.chat.id, users_create_now[message.chat.id]['type'], to_create_answer)
+
+        if id_of_created_vote < 0:
             bot.send_message(message.chat.id, "ERROR")
+        else:
+            bot.send_message(message.chat.id, "Voting created with code: " + str(id_of_created_vote))
 
         users_create_now.pop(message.chat.id, None)
     else:
