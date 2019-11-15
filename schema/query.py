@@ -1,5 +1,4 @@
-import models
-
+import schema
 
 def create_user(id, user_name=''):
     user_bool = models.User.get_or_create(id=id, name=user_name)

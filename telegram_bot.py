@@ -1,6 +1,6 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-from lib import get_types, creation, get_creator_answers
+from lib_fake import get_types, creation, get_creator_answers
 from schema.query import create_user
 
 TOKEN = "783657766:AAHh0XwRqUoYseLKyxZxhPr-vwhukp9iMCc"
@@ -16,7 +16,6 @@ def start(message):
         create_user(message.chat.id, message.chat.username)
     else:
         create_user(message.chat.id)
-
 
 
 @bot.message_handler(commands=['create'])
