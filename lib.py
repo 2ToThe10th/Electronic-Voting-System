@@ -32,7 +32,7 @@ def get_creator_answers(chat_id, type, answers):
 
 def vote(id):
     owner, type, config = queries.get_poll_data(id)
-    return type, vote_data['type'](config)
+    return type, vote_data[type](config)
 
 
 def get_vote(user_id, poll_id, answer):
