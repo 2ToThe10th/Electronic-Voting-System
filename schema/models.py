@@ -10,9 +10,18 @@ class User(Model):
         database = db
 
 
+class Type(Model):
+    title = CharField(max_length=100)
+    config_json = TextField()
+
+    class Meta:
+        database = db
+
+
 class Voting(Model):
     title = CharField(max_length=100, default='Voting number ' + str(id))
     description = TextField()
+    type_id = ForeignKeyField(Type)
 
     class Meta:
         database = db
@@ -38,4 +47,4 @@ class Votes(Model):
 
 
 db.connect()
-db.create_tables([User, Voting, Owner, Votes])
+db.create_tables([User, Type, Voting, Owner, Votes])
