@@ -10,8 +10,8 @@ class User(Model):
         database = db
 
 
-class Type(Model):
-    title = CharField(max_length=100)
+class VotingType(Model):
+    title = CharField(max_length=100, primary_key=True)
     config_json = TextField()
 
     class Meta:
@@ -20,20 +20,12 @@ class Type(Model):
 
 class Voting(Model):
     title = CharField(max_length=100, default='Voting number ' + str(id))
-    description = TextField()
-    type_id = ForeignKeyField(Type)
+    description = TextField(default='')
+    voting_type = ForeignKeyField(VotingType, backref='type title')
+    owner_id = ForeignKeyField(User)
 
     class Meta:
         database = db
-
-
-class Owner(Model):
-    user_id = ForeignKeyField(User, backref='owner')
-    voting_id = ForeignKeyField(Voting, backref='voting created')
-
-    class Meta:
-        database = db
-        primary_key = CompositeKey('user_id', 'voting_id')
 
 
 class Votes(Model):
@@ -47,4 +39,4 @@ class Votes(Model):
 
 
 db.connect()
-db.create_tables([User, Type, Voting, Owner, Votes])
+db.create_tables([User, VotingType, Voting, Votes])
