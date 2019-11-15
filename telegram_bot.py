@@ -63,7 +63,7 @@ def ask_and_create_evote(message):
 def print_vote_with_code(message):
     #try:
     code = int(message.text[5:])
-    vote_type, vote_answers, vote_question = vote(code)
+    vote_type, (vote_question, vote_answers) = vote(code)
     #except:
     #    bot.send_message(message.chat.id, "after /vote might go code of vote")
     #    return
