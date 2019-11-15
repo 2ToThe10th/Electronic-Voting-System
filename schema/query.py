@@ -1,4 +1,5 @@
 from . import models
+import subprocess
 
 
 def create_user(id, user_name=''):
@@ -45,3 +46,9 @@ def create_vote(user_id, poll_id, answer_json):
 def get_vote_data(user_id, poll_id):
     vote = models.Votes.get_by_id((user_id, poll_id))
     return vote.user_id, vote.poll_id, vote.answer_json
+
+
+def get_vote_by_poll(poll_id):
+    poll = models.Poll.get_by_id(poll_id)
+    votes = models.Votes.select().where(models.Votes.poll == poll)
+    return list(map(lambda x: x.__dict__['__data__'], votes))
