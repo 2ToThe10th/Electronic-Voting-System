@@ -5,23 +5,17 @@ db = SqliteDatabase('evoting.db')
 
 class User(Model):
     name = CharField(max_length=100, default='')
+    id = IntegerField(primary_key=True)
 
     class Meta:
         database = db
 
 
-class VotingType(Model):
-    title = CharField(max_length=100, primary_key=True)
-    config_json = TextField()
-
-    class Meta:
-        database = db
-
-
-class Voting(Model):
+class Poll(Model):
     title = CharField(max_length=100, default='Voting number ' + str(id))
     description = TextField(default='')
-    voting_type = ForeignKeyField(VotingType, backref='type title')
+    type = CharField(max_length=100)
+
     owner_id = ForeignKeyField(User)
 
     class Meta:
@@ -30,7 +24,7 @@ class Voting(Model):
 
 class Votes(Model):
     user_id = ForeignKeyField(User, backref='voter')
-    voting_id = ForeignKeyField(Voting, backref='voting', index=True)
+    voting_id = ForeignKeyField(Poll, backref='voting', index=True)
     answer_json = TextField()
 
     class Meta:
@@ -39,4 +33,4 @@ class Votes(Model):
 
 
 db.connect()
-db.create_tables([User, VotingType, Voting, Votes])
+db.create_tables([User, Poll, Votes])

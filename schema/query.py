@@ -1,21 +1,9 @@
 import models
 
 
-def create_type(title, config_json):
-    return models.VotingType.create(config_json=config_json, title=title)
+def create_user(id, user_name=''):
+    return models.User.get_or_create(id=id, name=user_name)[0].id
 
 
-def create_user(user_name):
-    return models.User.create(name=user_name)
-
-
-def create_voting(voting_type, title='', desc=''):
-    return models.Voting.create(voting_type=voting_type, title=title, description=desc)
-
-
-def create_owner(user_id, voting_id):
-    return models.Owner.create(user_id=user_id, voting_id=voting_id)
-
-
-def get_config(type_id):
-    return models.Type.get_by_id(type_id).config_json
+def create_poll(owner_id, type_title, title='', desc=''):
+    return models.Poll.get_or_create(owner_id=owner_id, type=type_title, title=title, description=desc)[0].id
