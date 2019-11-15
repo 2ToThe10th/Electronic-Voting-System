@@ -1,7 +1,8 @@
 import schema
 
+
 def create_user(id, user_name=''):
-    user_bool = models.User.get_or_create(id=id, name=user_name)
+    user_bool = schema.User.get_or_create(id=id, name=user_name)
     id = user_bool[0].id
     if user_bool[1]:
         print('User created with id =', id)
@@ -11,7 +12,7 @@ def create_user(id, user_name=''):
 
 
 def create_poll(owner_id, type_title, config, title='', desc=''):
-    poll_bool = models.Poll.get_or_create(owner_id=owner_id, type=type_title, config_json=config, title=title, description=desc)
+    poll_bool = schema.Poll.get_or_create(owner_id=owner_id, type=type_title, config_json=config, title=title, description=desc)
     id = poll_bool[0].id
     if poll_bool[1]:
         print('Poll created with id =', id)
