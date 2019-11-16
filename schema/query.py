@@ -54,7 +54,10 @@ def get_votes_by_poll(poll_id):
 
 
 def is_owner(poll_id, user_id):
-    poll = models.Poll.get_by_id(poll_id)
+    try:
+        poll = models.Poll.get_by_id(poll_id)
+    except:
+        return False
     return poll.owner_id == user_id
 
 
