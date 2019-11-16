@@ -73,10 +73,15 @@ def print_vote_with_code(message):
 
         users_vote_now[message.chat.id]['message_sended'] = bot.send_message(message.chat.id, send_message,
                                                                              reply_markup=markup)
-    elif vote_type == "choose_prioritets":
-        vote_question, vote_answers, vote_power = vote_params
-        users_vote_now[message.chat.id] = {'type': vote_type, 'code': code, 'vote_question': vote_question,
-                                           'vote_answer': vote_answers, 'vote_power': vote_power}
+    elif vote_type == "choose_prioritets" or vote_type == "choose_by_prioritets":
+        if vote_type == "choose_prioritets":
+            vote_question, vote_answers, vote_power = vote_params
+            users_vote_now[message.chat.id] = {'type': vote_type, 'code': code, 'vote_question': vote_question,
+                                               'vote_answer': vote_answers, 'vote_power': vote_power}
+        elif vote_type == "choose_by_prioritets":
+            vote_question, vote_answers = vote_params
+            users_vote_now[message.chat.id] = {'type': vote_type, 'code': code, 'vote_question': vote_question,
+                                               'vote_answer': vote_answers}
 
         send_message = vote_question + '\n'
         index = 0
@@ -86,8 +91,10 @@ def print_vote_with_code(message):
             send_message += ") "
             send_message += answer
             send_message += '\n'
-
-        send_message += "Please, write list of " + str(index) + " non-negative integer splited by comma, which mean priority of each variant\n"
+        if vote_type == "choose_prioritets":
+            send_message += "Please, write list of " + str(index) + " non-negative integer splited by comma, which mean priority of each variant\n"
+        elif vote_type == "choose_by_prioritets":
+            send_message += "Please, write list of transposition numbers from 1 to " + str(index) + " , which mean priority of each variant\n"
         bot.send_message(message.chat.id, send_message)
 
 
@@ -146,7 +153,7 @@ def voting_in_evote(message):
         vote_answer = message.text
         try:
             vote_answer = [int(i) for i in vote_answer.split(',')]
-            if len(vote_answer) !=  len(users_vote_now[message.chat.id]['vote_answer']):
+            if len(vote_answer) != len(users_vote_now[message.chat.id]['vote_answer']):
                 raise ValueError("Incorrect number of element")
             sum_of_answer = 0
             for i in vote_answer:
@@ -155,6 +162,22 @@ def voting_in_evote(message):
                 sum_of_answer += i
             if sum_of_answer > users_vote_now[message.chat.id]['vote_power']:
                 raise ValueError("Sum more than power")
+        except:
+            bot.reply_to(message, "Incorrect array")
+            return
+
+        bot.send_message(message.chat.id, "Your vote is really important for us")
+
+        get_vote(message.chat.id, users_vote_now[message.chat.id]['code'], vote_answer)
+        users_vote_now.pop(message.chat.id, None)
+
+    elif users_vote_now[message.chat.id]['type'] == "choose_by_prioritets":
+        vote_answer = message.text
+        try:
+            vote_answer = [int(i) for i in vote_answer.split(',')]
+            len_of_answer = len(users_vote_now[message.chat.id]['vote_answer'])
+            if sorted(vote_answer) != [i for i in range(1, len_of_answer + 1)]:
+                raise ValueError("Incorrect elements")
         except:
             bot.reply_to(message, "Incorrect array")
             return
