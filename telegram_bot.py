@@ -63,12 +63,10 @@ def get_statistic(message):
         return
 
     try:
-        if stats(code):
-            number_of_voted_pearson = queries.count_votes_by_poll(code)
-            made_stats[code] = bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(
-                number_of_voted_pearson))
-        else:
-            bot.send_message(message.chat.id, "No one voted")
+        stats(code)
+        number_of_voted_pearson = queries.count_votes_by_poll(code)
+        made_stats[code] = bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(
+            number_of_voted_pearson))
     except:
         bot.reply_to(message, "ERROR")
 
