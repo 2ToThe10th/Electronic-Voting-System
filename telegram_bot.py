@@ -68,7 +68,7 @@ def get_statistic(message):
         made_stats[code] = bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(
             number_of_voted_pearson))
     except:
-        bot.reply_to(message, "ERROR")
+        bot.reply_to(message, "Sorry, this function in development")
 
 
 @bot.callback_query_handler(
@@ -149,7 +149,7 @@ def print_vote_with_code(message):
             send_message += '\n'
         if vote_type == "choose_prioritets":
             send_message += "Please, write list of " + str(
-                index) + " non-negative integer splited by comma, which mean priority of each variant\n"
+                index) + " non-negative integer splited by comma, which mean priority of each variant, where their summary no more than " + str(vote_power) + "\n"
         elif vote_type == "choose_by_prioritets":
             send_message += "Please, write list of transposition numbers from 1 to " + str(
                 index) + " , which mean priority of each variant\n"
