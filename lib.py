@@ -1,4 +1,5 @@
 import json
+import re
 import schema.query as queries
 from normalizer import normalize_config
 from vote_functions import vote_data
@@ -25,38 +26,17 @@ def get_creator_answers(chat_id, type, answers):
     for answer in answers:
         poll[answer[0]] = answer[1]
     if normalize_config[type](poll):
-        poll_id = queries.create_poll(chat_id, type, poll)
+        poll_id = queries.create_poll(chat_id, type, json.dumps(poll))
         return poll_id
     return -1
 
 
 def vote(id):
     owner, type, config = queries.get_poll_data(id)
-    return vote_data['type'](config)
+    print(config)
+    config = json.loads(config)
+    return type, vote_data[type](config)
 
 
-
-
-
-# def choose_one_creation(id, question, variants):
-#     config = json.load(open('config.json'))
-#     config['question'] = question
-#     config['variants'] = variants
-#     # push_to_database
-#
-# def choose_one_vote_before(config):
-#     # push_to_database:  id_user id_poll number
-#     return config['say'], config['variants'], confi
-#
-#
-# # dict: type - vote process functions
-# vote_functions_before = {
-#     'choose_one': choose_one_vote_before
-# }
-#
-# def vote_before(id):
-#     # get type, config from database
-#     ans = vote_functions_before[type](config)
-#
-#print(creation(get_types()[0]))
-#print(get_creator_answers(get_types()[0], [['question', 'my question'], ['variants', 'Provide your variants, list with a comma']]))
+def get_vote(user_id, poll_id, answer):
+    queries.create_vote(user_id, poll_id, json.dumps(answer))
