@@ -52,3 +52,38 @@ def get_vote_by_poll(poll_id):
     poll = models.Poll.get_by_id(poll_id)
     votes = models.Votes.select().where(models.Votes.poll == poll)
     return list(map(lambda x: x.__dict__['__data__'], votes))
+
+
+def is_owner(poll_id, user_id):
+    poll = models.Poll.get_by_id(poll_id)
+    return poll.owner_id == user_id
+
+
+def create_stockholder(user_id, poll_id, weight):
+    user = models.User.get_by_id(user_id)
+    poll = models.Poll.get_by_id(poll_id)
+    try:
+        stock_bool = models.Votes.get_or_create(user=user, poll=poll, weight=weight)[1]
+    except models.IntegrityError:
+        stock_bool = False
+
+    if stock_bool:
+        print('Stockholder was created with user_id, poll_id =', str(user_id) + ',', poll_id)
+    else:
+        print('Stockholder with user_id, poll_id =', str(user_id) + ',', poll_id, 'already exists')
+    return user_id, poll_id
+
+
+def create_access(user_id, poll_id, answer_json):
+    user = models.User.get_by_id(user_id)
+    poll = models.Poll.get_by_id(poll_id)
+    try:
+        access_bool = models.Votes.get_or_create(user=user, poll=poll)[1]
+    except models.IntegrityError:
+        access_bool = False
+
+    if access_bool:
+        print('Access for user_id =', user_id, 'was created for poll_id =', poll_id)
+    else:
+        print('Access for user_id =', user_id, 'already exists for poll_id =', poll_id)
+    return user_id, poll_id

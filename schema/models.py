@@ -33,5 +33,24 @@ class Votes(Model):
         primary_key = CompositeKey('user', 'poll')
 
 
+class StockHolder(Model):
+    user = ForeignKeyField(User)
+    poll = ForeignKeyField(Poll)
+    weight = DoubleField()
+
+    class Meta:
+        database = db
+        primary_key = CompositeKey('user', 'poll')
+
+
+class AccessPoll(Model):
+    user = ForeignKeyField(User)
+    poll = ForeignKeyField(Poll)
+
+    class Meta:
+        database = db
+        primary_key = CompositeKey('user', 'poll')
+
+
 db.connect()
 db.create_tables([User, Poll, Votes])
