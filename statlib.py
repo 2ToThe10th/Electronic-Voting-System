@@ -4,7 +4,7 @@ import json
 
 
 def stats_choose_one(data, config, id):
-    data = list(map(int, data[0]['answer_json']))
+    data = [int(data[i]['answer_json']) for i in data]
     n = len(config['variants'])
     plt.hist(data, range=(1, n), bins=n)
     plt.xticks(list(range(1, n + 1)), config['variants'])
