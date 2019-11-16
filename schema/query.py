@@ -110,3 +110,7 @@ def has_user_access(user_id, poll_id):
 def delete_vote():
     q = models.Votes.delete()
     q.execute()
+
+
+def count_votes_by_poll(poll_id):
+    return len(models.Votes.select().where(models.Votes.poll_id == poll_id))
