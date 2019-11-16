@@ -79,7 +79,7 @@ def print_vote_with_code(message):
         code = int(message.text[5:])
         vote_type, vote_params = vote(code)
     except:
-        bot.send_message(message.chat.id, "after /vote might go correct code of vote")
+        bot.send_message(message.chat.id, "after /vote should be correct code of vote")
         return
 
     if not queries.has_user_access(message.chat.id, code):
