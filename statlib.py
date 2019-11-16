@@ -23,11 +23,3 @@ def stats(id):
     print(data, config, type)
 
     custom_stats[type](data, json.loads(config), id)
-
-
-# stats = {
-#     'choose_one': stats_choose_one,
-# }
-
-# stats['choose_one'](2)
-stats(2)
