@@ -7,7 +7,7 @@ def stats_choose_one(data, config, id):
     data = [int(i['answer_json']) for i in data]
     n = len(config['variants'])
     if len(data):
-        plt.hist(data, range=(1, n+1), bins=n, rwidth=0.2)
+        plt.hist(data, range=(1, n + 1), bins=n, rwidth=0.2)
         dd = {}
         for i in data:
             if i not in dd:
@@ -30,14 +30,14 @@ def stats_choose_one(data, config, id):
 
 
 def stats_choose_many(data, config, id):
-    data2 =[]
+    data2 = []
     for i in data:
         print(i)
         i['answer_json'] = list(map(int, json.loads(i['answer_json'])))
         data2.extend(i['answer_json'])
     n = len(config['variants'])
     if len(data2):
-        plt.hist(data2, range=(1, n+1), bins=n, rwidth=0.2)
+        plt.hist(data2, range=(1, n + 1), bins=n, rwidth=0.2)
         dd = {}
         for i in data2:
             if i not in dd:

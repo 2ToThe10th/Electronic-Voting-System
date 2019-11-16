@@ -65,8 +65,9 @@ def get_statistic(message):
     try:
         stats(code)
         number_of_voted_pearson = queries.count_votes_by_poll(code)
-        made_stats[code] = bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(
-            number_of_voted_pearson))
+        made_stats[code] = bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'),
+                                          caption="Number of voted persons: " + str(
+                                              number_of_voted_pearson))
     except:
         bot.reply_to(message, "Sorry, this function is in development")
 
@@ -149,7 +150,8 @@ def print_vote_with_code(message):
             send_message += '\n'
         if vote_type == "choose_prioritets":
             send_message += "Please, write list of " + str(
-                index) + " non-negative integers splited by comma, which mean priority of each variant, where their summary is no more than " + str(vote_power) + "\n"
+                index) + " non-negative integers splited by comma, which mean priority of each variant, where their summary is no more than " + str(
+                vote_power) + "\n"
         elif vote_type == "choose_by_prioritets":
             send_message += "Please, write list of transposition numbers from 1 to " + str(
                 index) + " , which mean priority of each variant\n"
@@ -211,7 +213,7 @@ def callback_vote_evote(call):
     elif users_vote_now[call.message.chat.id]['type'] == "choose_many":
         vote_answer = int(call.data[4:])
         users_vote_now[call.message.chat.id]['chosed_button'][vote_answer - 1] = not \
-        users_vote_now[call.message.chat.id]['chosed_button'][vote_answer - 1]
+            users_vote_now[call.message.chat.id]['chosed_button'][vote_answer - 1]
 
         markup = InlineKeyboardMarkup()
         markup.row_width = 1

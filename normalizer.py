@@ -31,7 +31,6 @@ def choose_by_prioritets_normalizer(poll):
         return False
 
 
-
 normalize_config = {
     'choose_one': choose_one_normalizer,
     'choose_many': choose_many_normalizer,
