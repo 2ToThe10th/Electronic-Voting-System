@@ -1,5 +1,5 @@
 import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from lib import get_types, creation, get_creator_answers, vote, get_vote
 import schema.query as queries
 
@@ -52,7 +52,10 @@ def print_vote_with_code(message):
         bot.send_message(message.chat.id, "after /vote might go correct code of vote")
         return
 
-    #TODO: if already vote
+    if not queries.has_user_access(message.chat.id, code):
+        bot.send_message(message.chat.id, "You don't have access or vote doesn't exist")
+        return
+
     if queries.has_user_voted(message.chat.id, code):
         bot.send_message(message.chat.id, "You have already voted")
         return
