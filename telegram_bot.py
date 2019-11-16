@@ -149,7 +149,7 @@ def print_vote_with_code(message):
             send_message += '\n'
         if vote_type == "choose_prioritets":
             send_message += "Please, write list of " + str(
-                index) + " non-negative integer splited by comma, which mean priority of each variant, where their summary no more than " + str(vote_power) + "\n"
+                index) + " non-negative integers splited by comma, which mean priority of each variant, where their summary no more than " + str(vote_power) + "\n"
         elif vote_type == "choose_by_prioritets":
             send_message += "Please, write list of transposition numbers from 1 to " + str(
                 index) + " , which mean priority of each variant\n"
