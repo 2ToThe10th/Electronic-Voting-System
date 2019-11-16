@@ -105,3 +105,12 @@ def has_user_access(user_id, poll_id):
 
     users_with_access = models.AccessPoll.select().where(models.AccessPoll.poll_id == poll_id)
     return len(users_with_access) == 0 or user_id in map(lambda el: el.user_id, users_with_access)
+
+
+def delete_vote():
+    q = models.Votes.delete()
+    q.execute()
+
+
+def count_votes_by_poll(poll_id):
+    return len(models.Votes.select().where(models.Votes.poll_id == poll_id))
