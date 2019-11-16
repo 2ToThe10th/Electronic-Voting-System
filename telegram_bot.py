@@ -22,7 +22,7 @@ def change_stats(code):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Hello. Please, create a poll or vote in already created")
+    bot.send_message(message.chat.id, "Welcome to our bot. Now, you can create a poll or vote in the existing one")
     if message.chat.username is not None:
         queries.create_user(message.chat.id, message.chat.username)
     else:
