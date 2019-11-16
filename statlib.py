@@ -21,7 +21,8 @@ def stats_choose_one(data, config, id):
         plt.close()
         return True
     else:
-        return False
+        plt.hist(data, range=(1, n + 1), bins=n, rwidth=0.2)
+        return True
 
 
 def stats_choose_many(data, config, id):
@@ -47,7 +48,8 @@ def stats_choose_many(data, config, id):
         plt.close()
         return True
     else:
-        return False
+        plt.hist(data2, range=(1, n + 1), bins=n, rwidth=0.2)
+        return True
 
 
 custom_stats = {
