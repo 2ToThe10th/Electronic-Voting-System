@@ -9,6 +9,7 @@ TOKEN = "783657766:AAHh0XwRqUoYseLKyxZxhPr-vwhukp9iMCc"
 bot = telebot.TeleBot(TOKEN)
 users_create_now = dict()
 users_vote_now = dict()
+made_stats = dict()
 
 
 @bot.message_handler(commands=['start'])
@@ -54,8 +55,8 @@ def get_statistic(message):
 
     try:
         if stats(code):
-            number_of_voted_peple = queries.count_votes_by_poll(code)
-            bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(number_of_voted_peple))
+            number_of_voted_pearson = queries.count_votes_by_poll(code)
+            made_stats[code] = [message.chat.id ,bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(number_of_voted_pearson))]
         else:
             bot.send_message(message.chat.id, "No one voted")
     except:
@@ -107,7 +108,7 @@ def print_vote_with_code(message):
             index += 1
             send_message += str(index)
             send_message += ") "
-            send_message += answer
+            send_message += answer.strip()
             send_message += '\n'
             markup.add(InlineKeyboardButton(index, callback_data="vote" + str(index)))
 
@@ -133,7 +134,7 @@ def print_vote_with_code(message):
             index += 1
             send_message += str(index)
             send_message += ") "
-            send_message += answer
+            send_message += answer.strip()
             send_message += '\n'
         if vote_type == "choose_prioritets":
             send_message += "Please, write list of " + str(index) + " non-negative integer splited by comma, which mean priority of each variant\n"
