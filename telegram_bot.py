@@ -52,6 +52,8 @@ def print_vote_with_code(message):
         bot.send_message(message.chat.id, "after /vote might go correct code of vote")
         return
 
+    #TODO: if already vote
+
     if vote_type == "choose_one" or vote_type == "choose_many":
         vote_question, vote_answers = vote_params
         users_vote_now[message.chat.id] = {'type': vote_type, 'code': code, 'vote_question': vote_question, 'vote_answer': vote_answers}
@@ -96,6 +98,18 @@ def print_vote_with_code(message):
         elif vote_type == "choose_by_prioritets":
             send_message += "Please, write list of transposition numbers from 1 to " + str(index) + " , which mean priority of each variant\n"
         bot.send_message(message.chat.id, send_message)
+    elif vote_type == "laws":
+        vote_statement = vote_params
+        users_vote_now[message.chat.id] = {'type': vote_type, 'code': code, 'vote_statement': vote_statement}
+
+        send_message = "Are you agree with the statement:\n " + vote_statement + "?"
+        markup = InlineKeyboardMarkup()
+        markup.row_width = 1
+        markup.add(InlineKeyboardButton("For", callback_data="voteFor"))
+        markup.add(InlineKeyboardButton("Abstained", callback_data="voteAbstained"))
+        markup.add(InlineKeyboardButton("Against", callback_data="voteAgainst"))
+
+        users_vote_now[message.chat.id]['message_sended'] = bot.send_message(message.chat.id, send_message, reply_markup=markup)
 
 
 @bot.message_handler(func=lambda message: message.chat.id in users_create_now and users_create_now[message.chat.id] is not None and users_create_now[message.chat.id].get('answer') is not None)
@@ -145,6 +159,15 @@ def callback_vote_evote(call):
         markup.add(InlineKeyboardButton("SUBMIT", callback_data="SUBMIT"))
 
         bot.edit_message_text(send_message, chat_id=call.message.chat.id, message_id=users_vote_now[call.message.chat.id]['message_sended'].message_id, reply_markup=markup)
+    elif users_vote_now[call.message.chat.id]['type'] == "laws":
+        vote_answer = call.data[4:]
+
+        bot.edit_message_text(users_vote_now[call.message.chat.id]['message_sended'].text + "\n Your choice: " + vote_answer, chat_id=call.message.chat.id,
+                              message_id=users_vote_now[call.message.chat.id]['message_sended'].message_id)
+
+        get_vote(call.message.chat.id, users_vote_now[call.message.chat.id]['code'], vote_answer)
+
+        users_vote_now.pop(call.message.chat.id, None)
 
 
 @bot.message_handler(func=lambda message: message.chat.id in users_vote_now and 'type' in users_vote_now[message.chat.id])
