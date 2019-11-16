@@ -37,4 +37,5 @@ normalize_config = {
     'choose_many': choose_many_normalizer,
     'choose_prioritets': choose_prioritets_normalizer,
     'choose_by_prioritets': choose_by_prioritets_normalizer,
+    'laws': lambda x: x,
 }

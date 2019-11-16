@@ -38,5 +38,10 @@
             null,
             ", list with a comma"
         ]
+    },
+    "laws": {
+        "question": [
+            null
+        ]
     }
 }
