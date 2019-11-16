@@ -53,6 +53,9 @@ def print_vote_with_code(message):
         return
 
     #TODO: if already vote
+    if queries.has_user_voted(message.chat.id, code):
+        bot.send_message(message.chat.id, "You have already voted")
+        return
 
     if vote_type == "choose_one" or vote_type == "choose_many":
         vote_question, vote_answers = vote_params
@@ -131,7 +134,6 @@ def ask_and_create_evote(message):
 
 @bot.callback_query_handler(func=lambda call: len(call.data) >= 4 and call.data[:4] == "vote" and call.message.chat.id in users_vote_now and users_vote_now[call.message.chat.id] is not None)
 def callback_vote_evote(call):
-    print(users_vote_now[call.message.chat.id])
     if users_vote_now[call.message.chat.id]['type'] == "choose_one":
         vote_answer = int(call.data[4:])
         get_vote(call.message.chat.id, users_vote_now[call.message.chat.id]['code'], vote_answer)
@@ -206,7 +208,6 @@ def voting_in_evote(message):
             return
 
         bot.send_message(message.chat.id, "Your vote is really important for us")
-        print(vote_answer)
 
         get_vote(message.chat.id, users_vote_now[message.chat.id]['code'], vote_answer)
         users_vote_now.pop(message.chat.id, None)
