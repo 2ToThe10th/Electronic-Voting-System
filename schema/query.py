@@ -47,10 +47,10 @@ def get_vote_data(user_id, poll_id):
     return vote.user_id, vote.poll_id, vote.answer_json
 
 
-def get_vote_by_poll(poll_id):
+def get_votes_by_poll(poll_id):
     poll = models.Poll.get_by_id(poll_id)
     votes = models.Votes.select().where(models.Votes.poll == poll)
-    return list(map(lambda x: x.__dict__['__data__'], votes)), poll.config_json
+    return list(map(lambda x: x.__dict__['__data__'], votes)), poll.config_json, poll.type
 
 
 def is_owner(poll_id, user_id):
