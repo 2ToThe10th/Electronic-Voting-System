@@ -52,8 +52,11 @@ def get_statistic(message):
         bot.reply_to(message, "vote doesn't exist or you aren't creater")
         return
 
-    stats(code)
-    bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'))
+    try:
+        stats(code)
+        bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'))
+    except:
+        bot.reply_to(message, "ERROR")
 
 
 @bot.callback_query_handler(func=lambda call: len(call.data) >= 4 and call.data[:4] == "type" and call.message.chat.id in users_create_now)
@@ -250,12 +253,14 @@ def voting_in_evote(message):
 def submit_vote(call):
     if users_vote_now[call.message.chat.id]['type'] == "choose_many":
         list_of_answer = []
+        list_of_answer_to_func = []
         for i in range(len(users_vote_now[call.message.chat.id]['vote_answer'])):
             if users_vote_now[call.message.chat.id]['chosed_button'][i]:
                 list_of_answer.append(users_vote_now[call.message.chat.id]['vote_answer'][i])
+                list_of_answer_to_func.append(i + 1)
         bot.edit_message_text(users_vote_now[call.message.chat.id]['vote_question'] + '\n' + "Your choise: " + ' '.join(list_of_answer), chat_id=call.message.chat.id,
                               message_id=users_vote_now[call.message.chat.id]['message_sended'].message_id)
-        get_vote(call.message.chat.id, users_vote_now[call.message.chat.id]['code'], list_of_answer)
+        get_vote(call.message.chat.id, users_vote_now[call.message.chat.id]['code'], list_of_answer_to_func)
         users_vote_now.pop(call.message.chat.id, None)
 
 
