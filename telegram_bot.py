@@ -53,9 +53,11 @@ def get_statistic(message):
         return
 
     try:
-        number_of_voted_peple = queries.count_votes_by_poll(code)
-        stats(code)
-        bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(number_of_voted_peple))
+        if stats(code):
+            number_of_voted_peple = queries.count_votes_by_poll(code)
+            bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'), caption="Number of voted persons: " + str(number_of_voted_peple))
+        else:
+            bot.send_message(message.chat.id, "No one voted")
     except:
         bot.reply_to(message, "ERROR")
 
