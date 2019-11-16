@@ -22,7 +22,7 @@ def change_stats(code):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Welcome to our bot. Now, you can create a poll or vote in the existing one")
+    bot.send_message(message.chat.id, "Welcome to voting bot. Now, you can create a poll or vote in the existing one")
     if message.chat.username is not None:
         queries.create_user(message.chat.id, message.chat.username)
     else:
@@ -206,7 +206,7 @@ def callback_vote_evote(call):
                               users_vote_now[call.message.chat.id]['vote_answer'][vote_answer - 1],
                               chat_id=call.message.chat.id,
                               message_id=users_vote_now[call.message.chat.id]['message_sended'].message_id)
-        bot.send_message(call.message.chat.id, "Your vote is really important for us")
+        bot.send_message(call.message.chat.id, "Your vote was accepted")
         if users_vote_now[call.message.chat.id]['code'] in made_stats:
             change_stats(users_vote_now[call.message.chat.id]['code'])
         users_vote_now.pop(call.message.chat.id, None)
@@ -269,7 +269,7 @@ def voting_in_evote(message):
             bot.reply_to(message, "Incorrect array")
             return
 
-        bot.send_message(message.chat.id, "Your vote is really important for us")
+        bot.send_message(message.chat.id, "Your vote was accepted")
 
         get_vote(message.chat.id, users_vote_now[message.chat.id]['code'], vote_answer)
         users_vote_now.pop(message.chat.id, None)
@@ -285,7 +285,7 @@ def voting_in_evote(message):
             bot.reply_to(message, "Incorrect array")
             return
 
-        bot.send_message(message.chat.id, "Your vote is really important for us")
+        bot.send_message(message.chat.id, "Your vote was accepted")
 
         get_vote(message.chat.id, users_vote_now[message.chat.id]['code'], vote_answer)
         users_vote_now.pop(message.chat.id, None)
@@ -301,7 +301,7 @@ def submit_vote(call):
                 list_of_answer.append(users_vote_now[call.message.chat.id]['vote_answer'][i].strip())
                 list_of_answer_to_func.append(i + 1)
         bot.edit_message_text(
-            users_vote_now[call.message.chat.id]['vote_question'] + '\n' + "Your choise: " + ' '.join(list_of_answer),
+            users_vote_now[call.message.chat.id]['vote_question'] + '\n' + "Your choice: " + ', '.join(list_of_answer),
             chat_id=call.message.chat.id,
             message_id=users_vote_now[call.message.chat.id]['message_sended'].message_id)
         get_vote(call.message.chat.id, users_vote_now[call.message.chat.id]['code'], list_of_answer_to_func)
