@@ -22,7 +22,7 @@ def change_stats(code):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Hello. Make vote")
+    bot.send_message(message.chat.id, "Hello. Please, create a poll or vote in already created")
     if message.chat.username is not None:
         queries.create_user(message.chat.id, message.chat.username)
     else:
@@ -59,7 +59,7 @@ def get_statistic(message):
     print(message)
 
     if not queries.is_owner(code, message.chat.id):
-        bot.reply_to(message, "vote doesn't exist or you aren't creater")
+        bot.reply_to(message, "vote doesn't exist or you aren't creator")
         return
 
     try:
