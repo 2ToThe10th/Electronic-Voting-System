@@ -53,4 +53,4 @@ class AccessPoll(Model):
 
 
 db.connect()
-db.create_tables([User, Poll, Votes])
+db.create_tables([User, Poll, Votes, AccessPoll, StockHolder])

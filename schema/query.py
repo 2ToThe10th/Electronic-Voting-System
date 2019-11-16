@@ -62,7 +62,7 @@ def create_stockholder(user_id, poll_id, weight):
     user = models.User.get_by_id(user_id)
     poll = models.Poll.get_by_id(poll_id)
     try:
-        stock_bool = models.Votes.get_or_create(user=user, poll=poll, weight=weight)[1]
+        stock_bool = models.StockHolder.get_or_create(user=user, poll=poll, weight=weight)[1]
     except models.IntegrityError:
         stock_bool = False
 
@@ -77,7 +77,7 @@ def create_access(user_id, poll_id):
     user = models.User.get_by_id(user_id)
     poll = models.Poll.get_by_id(poll_id)
     try:
-        access_bool = models.Votes.get_or_create(user=user, poll=poll)[1]
+        access_bool = models.AccessPoll.get_or_create(user=user, poll=poll)[1]
     except models.IntegrityError:
         access_bool = False
 
@@ -91,3 +91,14 @@ def create_access(user_id, poll_id):
 def has_user_voted(user_id, poll_id):
     elements = models.Votes.select().where(models.Votes.poll_id == poll_id, models.Votes.user_id == user_id)
     return len(elements) != 0
+
+
+def has_user_access(user_id, poll_id):
+    try:
+        models.User.get_by_id(user_id)
+        models.Poll.get_by_id(poll_id)
+    except:
+        return False
+
+    users_with_access = models.AccessPoll.select().where(models.AccessPoll.poll_id == poll_id)
+    return len(users_with_access) == 0 or user_id in map(lambda el: el.user_id, users_with_access)
