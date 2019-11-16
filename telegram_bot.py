@@ -1,6 +1,7 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from lib import get_types, creation, get_creator_answers, vote, get_vote
+from statlib import stats
 import schema.query as queries
 
 TOKEN = "783657766:AAHh0XwRqUoYseLKyxZxhPr-vwhukp9iMCc"
@@ -21,6 +22,11 @@ def start(message):
 
 @bot.message_handler(commands=['create'])
 def create_create_evote(message):
+
+    if message.chat.type != "private":
+        bot.send_message(message.chat.id, "Please, vote in private chat with bot")
+        return
+
     users_vote_now.pop(message.chat.id, None)
     users_create_now.pop(message.chat.id, None)
     vote_types = get_types()
@@ -29,6 +35,25 @@ def create_create_evote(message):
     for vote_type in vote_types:
         markup.add(InlineKeyboardButton(vote_type, callback_data="type" + vote_type))
     users_create_now[message.chat.id] = {'type_message': bot.send_message(message.chat.id, "Select type of electronic voting system:", reply_markup=markup)}
+
+
+@bot.message_handler(commands=['get_statistic'])
+def get_statistic(message):
+    try:
+        print(message.text[14:])
+        code = int(message.text[14:])
+    except:
+        bot.reply_to(message, "Incorrect command's arguments")
+        return
+
+    print(message)
+
+    if not queries.is_owner(code, message.chat.id):
+        bot.reply_to(message, "vote doesn't exist or you aren't creater")
+        return
+
+    stats(code)
+    bot.send_photo(message.chat.id, open('hists/hist' + str(code) + '.png', 'rb'))
 
 
 @bot.callback_query_handler(func=lambda call: len(call.data) >= 4 and call.data[:4] == "type" and call.message.chat.id in users_create_now)
@@ -42,6 +67,11 @@ def callback_evote(call):
 
 @bot.message_handler(commands=['vote'])
 def print_vote_with_code(message):
+
+    if message.chat.type != "private":
+        bot.send_message(message.chat.id, "Please, vote in private chat with bot")
+        return
+
     users_create_now.pop(message.chat.id, None)
     users_vote_now.pop(message.chat.id, None)
 
@@ -49,7 +79,7 @@ def print_vote_with_code(message):
         code = int(message.text[5:])
         vote_type, vote_params = vote(code)
     except:
-        bot.send_message(message.chat.id, "after /vote might go correct code of vote")
+        bot.send_message(message.chat.id, "after /vote should be correct code of vote")
         return
 
     if not queries.has_user_access(message.chat.id, code):
