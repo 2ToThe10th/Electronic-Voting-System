@@ -1,5 +1,4 @@
 from . import models
-import subprocess
 
 
 def create_user(id, user_name=''):
@@ -74,7 +73,7 @@ def create_stockholder(user_id, poll_id, weight):
     return user_id, poll_id
 
 
-def create_access(user_id, poll_id, answer_json):
+def create_access(user_id, poll_id):
     user = models.User.get_by_id(user_id)
     poll = models.Poll.get_by_id(poll_id)
     try:
@@ -87,3 +86,8 @@ def create_access(user_id, poll_id, answer_json):
     else:
         print('Access for user_id =', user_id, 'already exists for poll_id =', poll_id)
     return user_id, poll_id
+
+
+def has_user_voted(user_id, poll_id):
+    elements = models.Votes.select().where(models.Votes.poll_id == poll_id, models.Votes.user_id == user_id)
+    return len(elements) != 0

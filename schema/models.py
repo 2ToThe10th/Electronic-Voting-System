@@ -45,7 +45,7 @@ class StockHolder(Model):
 
 class AccessPoll(Model):
     user = ForeignKeyField(User)
-    poll = ForeignKeyField(Poll)
+    poll = ForeignKeyField(Poll, index=True)
 
     class Meta:
         database = db
