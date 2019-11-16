@@ -9,9 +9,14 @@ def choose_many_vote(poll):
 def choose_prioritets(poll):
     return poll['question'], poll['variants'], poll['power']
 
+def choose_by_prioritets(poll):
+    return poll['question'], poll['variants']
+
 
 vote_data = {
     'choose_one': choose_one_vote,
     'choose_many': choose_many_vote,
-    'choose_prioritets': choose_prioritets
+    'choose_prioritets': choose_prioritets,
+    'choose_by_prioritets': choose_by_prioritets,
+
 }
