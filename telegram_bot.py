@@ -4,7 +4,7 @@ from lib import get_types, creation, get_creator_answers, vote, get_vote
 from statlib import stats
 import schema.query as queries
 
-TOKEN = "783657766:AAHh0XwRqUoYseLKyxZxhPr-vwhukp9iMCc"
+TOKEN = "*******:***********************************"
 
 bot = telebot.TeleBot(TOKEN)
 users_create_now = dict()
